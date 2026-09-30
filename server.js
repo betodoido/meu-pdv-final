@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
         <!-- Topo Neutro e Clean com Logo Centralizado (Estilo MenuDino) -->
         <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
             <div class="p-4 max-w-md mx-auto flex items-center space-x-4">
-                <div class="w-14 h-16 bg-red-600 rounded-xl flex flex-col items-center justify-center text-white text-xl font-extrabold shadow-sm">
+                <div class="w-14 h-14 bg-red-600 rounded-xl flex flex-col items-center justify-center text-white text-xl font-extrabold shadow-sm">
                     <span>M</span>
                     <span class="text-[9px] -mt-1 font-bold tracking-widest uppercase">D</span>
                 </div>
@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
                 </div>
             </div>
 
-            <!-- Navegacão Horizontal por Categorias -->
+            <!-- Navegação Horizontal por Categorias -->
             <div class="flex space-x-2 overflow-x-auto no-scrollbar border-t border-slate-100 p-2 max-w-md mx-auto scroll-smooth">
                 <a href="#sec-Burgers" class="bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap shadow-xs">Burgers</a>
                 <a href="#sec-Acompanhamentos" class="bg-slate-100 text-slate-600 text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">Acompanhamentos</a>
@@ -80,12 +80,10 @@ app.get('/', (req, res) => {
 
             <!-- Checkout de Endereço Consumer -->
             <section class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-3">
-                <h2 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider border-b pb-2 flex items-center space-x-1.5">
-                    <span>📍 Finalizar para o Delivery</span>
-                </h2>
+                <h2 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider border-b pb-2">📍 Finalizar para o Delivery</h2>
                 <div class="space-y-2.5">
                     <input type="text" id="f-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm bg-slate-50 font-medium focus:outline-none focus:border-red-500 transition-all">
-                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm bg-slate-50 font-medium focus:outline-none_focus:border-red-500 transition-all">
+                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm bg-slate-50 font-medium focus:outline-none focus:border-red-500 transition-all">
                     <textarea id="f-end" placeholder="Endereço de Entrega (Rua, Número, Bairro)" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm bg-slate-50 font-medium focus:outline-none focus:border-red-500 transition-all" rows="2"></textarea>
                 </div>
             </section>
@@ -115,22 +113,21 @@ app.get('/', (req, res) => {
                 prods.forEach(p => {
                     const container = document.getElementById('cat-' + (p.categoria || "Burgers"));
                     if(container) {
-                        container.innerHTML += \`
-                            <div class="bg-white p-3 rounded-xl border border-slate-100 flex justify-between items-center shadow-xs">
-                                <div class="flex-1 pr-3">
-                                    <h3 class="font-bold text-slate-900 text-sm tracking-tight">\${p.nome}</h3>
-                                    <p class="text-[11px] text-slate-400 mt-0.5 leading-tight line-clamp-2 font-medium">\${p.descricao}</p>
-                                    <p class="text-slate-900 font-black mt-2 text-xs">R$ \${p.preco.toFixed(2)}</p>
-                                </div>
-                                <div class="flex flex-col items-center space-y-2">
-                                    <img src="\${p.foto}" class="w-14 h-14 object-cover rounded-lg border bg-slate-100 shadow-xs pointer-events-none">
-                                    <div class="flex items-center space-x-1.5 bg-slate-50 p-0.5 rounded-md border border-slate-100">
-                                        <button onclick="alt(\${p.id},-1)" class="w-6 h-6 rounded bg-white border text-gray-600 text-xs font-bold flex items-center justify-center shadow-xs">-</button>
-                                        <span id="q-\${p.id}" class="font-bold text-xs w-3 text-center text-slate-800">0</span>
-                                        <button onclick="alt(\text{\${p.id}},1)" class="w-6 h-6 rounded bg-red-600 text-white text-xs font-bold flex items-center justify-center shadow-xs">+</button>
-                                    </div>
-                                </div>
-                            </div>\`;
+                        container.innerHTML += '<div class="bg-white p-3 rounded-xl border border-slate-100 flex justify-between items-center shadow-xs">' +
+                            '<div class="flex-1 pr-3">' +
+                                '<h3 class="font-bold text-slate-900 text-sm tracking-tight">' + p.nome + '</h3>' +
+                                '<p class="text-[11px] text-slate-400 mt-0.5 leading-tight line-clamp-2 font-medium">' + p.descricao + '</p>' +
+                                '<p class="text-gray-900 font-black mt-2 text-xs">R$ ' + p.preco.toFixed(2) + '</p>' +
+                            '</div>' +
+                            '<div class="flex flex-col items-center space-y-2">' +
+                                '<img src="' + p.foto + '" class="w-14 h-14 object-cover rounded-lg border bg-slate-100 shadow-xs pointer-events-none">' +
+                                '<div class="flex items-center space-x-1.5 bg-slate-50 p-0.5 rounded-md border border-slate-100">' +
+                                    '<button onclick="alt(' + p.id + ',-1)" class="w-6 h-6 rounded bg-white border text-gray-600 text-xs font-bold flex items-center justify-center shadow-xs">-</button>' +
+                                    '<span id="q-' + p.id + '" class="font-bold text-xs w-3 text-center text-slate-800">0</span>' +
+                                    '<button onclick="alt(' + p.id + ',1)" class="w-6 h-6 rounded bg-red-600 text-white text-xs font-bold flex items-center justify-center shadow-xs">+</button>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
                     }
                 });
             }
@@ -143,3 +140,6 @@ app.get('/', (req, res) => {
                     totalItens += qtd;
                 });
                 document.getElementById('bag-count').innerText = totalItens;
+                document.getElementById('v-total').innerText = 'R$ ' + (sub > 0 ? sub + TAXA : TAXA).toFixed(2);
+            }
+            async function enviar() {
