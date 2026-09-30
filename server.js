@@ -25,7 +25,7 @@ db.serialize(() => {
 });
 
 // ========================================================
-// 🛒 TELA DO CARDÁPIO EMBUTIDA (Abre direto no link principal)
+// 🛒 TELA DO CARDÁPIO EMBUTIDA (Abre direto no link puro)
 // ========================================================
 app.get('/', (req, res) => {
     res.send(`
@@ -50,11 +50,11 @@ app.get('/', (req, res) => {
                 const r = await fetch('/api/produtos'); prods = await r.json();
                 const div = document.getElementById('container-cardapio');
                 prods.forEach(p => {
-                    div.innerHTML += \`<div class="bg-white p-4 rounded-xl border flex justify-between items-center"><div><h3 class="font-bold text-gray-800">\${p.nome}</h3><p class="text-xs text-gray-400">\${p.descricao}</p><p class="text-red-600 font-bold mt-1">R$ \${p.preco.toFixed(2)}</p></div><div class="flex items-center space-x-2"><button onclick="alt(\${p.id},-1)" class="w-8 h-8 rounded bg-gray-100 font-bold">-</button><span id="q-\${p.id}" class="font-bold text-sm w-4 text-center">0</span><button onclick="alt(\${p.id},1)" class="w-8 h-8 rounded bg-red-600 text-white font-bold">+</button></div></div>\`;
+                    div.innerHTML += '<div class="bg-white p-4 rounded-xl border flex justify-between items-center"><div><h3 class="font-bold text-gray-800">' + p.nome + '</h3><p class="text-xs text-gray-400">' + p.descricao + '</p><p class="text-red-600 font-bold mt-1">R$ ' + p.preco.toFixed(2) + '</p></div><div class="flex items-center space-x-2"><button onclick="alt(' + p.id + ',-1)" class="w-8 h-8 rounded bg-gray-100 font-bold">-</button><span id="q-' + p.id + '" class="font-bold text-sm w-4 text-center">0</span><button onclick="alt(' + p.id + ',1)" class="w-8 h-8 rounded bg-red-600 text-white font-bold">+</button></div></div>';
                 });
             }
             function alt(id, d) {
-                car[id] = (car[id] || 0) + d; if(car[id] < 0) car[id] = 0; document.getElementById(\`q-\${id}\`).innerText = car[id];
+                car[id] = (car[id] || 0) + d; if(car[id] < 0) car[id] = 0; document.getElementById('q-' + id).innerText = car[id];
                 let sub = 0; prods.forEach(p => sub += (car[p.id] || 0) * p.preco);
                 document.getElementById('v-total').innerText = 'R$ ' + (sub > 0 ? sub + TAXA : TAXA).toFixed(2);
             }
@@ -102,17 +102,17 @@ app.get('/painel', (req, res) => {
                 peds.forEach(p => {
                     const card = document.createElement('div'); card.className = "bg-gray-50 p-3 rounded-lg border";
                     let btn = "";
-                    if(p.status === 'Pendente') btn = \`<button onclick="status(\${p.id},'Em Preparo')" class="mt-2 w-full bg-blue-600 text-white text-xs py-1.5 rounded font-bold">Aceitar</button>\`;
-                    else if(p.status === 'Em Preparo') btn = \`<button onclick="status(\${p.id},'Saiu para Entrega')" class="mt-2 w-full bg-orange-500 text-white text-xs py-1.5 rounded font-bold">Despachar 🛵</button>\`;
-                    else if(p.status === 'Saiu para Entrega') btn = \`<button onclick="status(\${p.id},'Entregue')" class="mt-2 w-full bg-green-600 text-white text-xs py-1.5 rounded font-bold">Entregue ✅</button>\`;
+                    if(p.status === 'Pendente') btn = '<button onclick="status(' + p.id + ',\\'Em Preparo\\')" class="mt-2 w-full bg-blue-600 text-white text-xs py-1.5 rounded font-bold">Aceitar</button>';
+                    else if(p.status === 'Em Preparo') btn = '<button onclick="status(' + p.id + ',\\'Saiu para Entrega\\')" class="mt-2 w-full bg-orange-500 text-white text-xs py-1.5 rounded font-bold">Despachar 🛵</button>';
+                    else if(p.status === 'Saiu para Entrega') btn = '<button onclick="status(' + p.id + ',\\'Entregue\\')" class="mt-2 w-full bg-green-600 text-white text-xs py-1.5 rounded font-bold">Entregue ✅</button>';
                     
-                    card.innerHTML = \`<div class="flex justify-between font-bold text-xs"><span>#\${p.id} - \${p.cliente_nome}</span><span>R$ \${p.total.toFixed(2)}</span></div><p class="text-[10px] text-gray-400 mt-1">\${p.endereco_entrega}</p><p class="text-xs font-bold mt-2 text-gray-600 whitespace-pre-line">\${p.resumo_itens||''}</p>\${btn}\`;
+                    card.innerHTML = '<div class="flex justify-between font-bold text-xs"><span>#' + p.id + ' - ' + p.cliente_nome + '</span><span>R$ ' + p.total.toFixed(2) + '</span></div><p class="text-[10px] text-gray-400 mt-1">' + p.endereco_entrega + '</p><p class="text-xs font-bold mt-2 text-gray-600 whitespace-pre-line">' + (p.resumo_itens||'') + '</p>' + btn;
                     if(p.status==='Pendente'||p.status==='Em Preparo') divP.appendChild(card);
                     if(p.status==='Saiu para Entrega') divR.appendChild(card);
-                    if(p.status==='Entregue') { card.className="bg-green-50 p-2 rounded text-[11px] text-gray-500"; card.innerHTML=\`#\${p.id} entregue para \${p.cliente_nome} (R$ \${p.total.toFixed(2)})\`; divC.appendChild(card); }
+                    if(p.status==='Entregue') { card.className="bg-green-50 p-2 rounded text-[11px] text-gray-500"; card.innerHTML='#' + p.id + ' entregue para ' + p.cliente_nome + ' (R$ ' + p.total.toFixed(2) + ')'; divC.appendChild(card); }
                 });
             }
-            async function status(id, st) { await fetch(\`/api/pedidos/\${id}/status\`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ novoStatus: st }) }); load(); }
+            async function status(id, st) { await fetch('/api/pedidos/' + id + '/status', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ novoStatus: st }) }); load(); }
             setInterval(load, 3000); load();
         </script>
     </body>
