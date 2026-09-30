@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Controle Delivery</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 p-6 text-slate-800">
+    <div class="max-w-6xl mx-auto space-y-6">
+        <header class="bg-white p-5 rounded-2xl border flex justify-between items-center shadow-xs">
+            <div>
+                <h1 class="text-xl font-black text-slate-900">💻 Monitor de Pedidos & Frente de Caixa</h1>
+                <p class="text-xs text-slate-400">Gerenciamento em Tempo Real</p>
+            </div>
+            <button onclick="buscar()" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs">🔄 Sincronizar</button>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-blue-600 border-b pb-2">🍳 COZINHA / PREPARO</h2><div id="p-cozinha" class="space-y-2"></div></div>
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-orange-500 border-b pb-2">🛵 EM ROTA</h2><div id="p-rota" class="space-y-2"></div></div>
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-emerald-600 border-b pb-2">✅ CONCLUÍDOS</h2><div id="p-concluido" class="space-y-2"></div></div>
+        </div>
+    </div>
+    <script>
+        async function buscar() {
+            const r = await fetch('/api/pedidos'); const peds = await r.json();
+            const divP = document.getElementById('p-cozinha'), divR = document.getElementById('p-rota'), divC = document.getElementById('p-concluido');
+            divP.innerHTML = ""; divR.innerHTML = ""; divC.innerHTML = "";
+            peds.forEach(p => {
+                const card = document.createElement('div'); card.className = "bg-slate-50 p-4 rounded-xl border space-y-2 shadow-xs";
+                let btn = "";
+                if(p.status === 'Pendente') btn = `<button onclick="alterar(${p.id},'Em Preparo')" class="w-full bg-blue-600 text-white text-xs py-2 rounded-lg font-bold uppercase">Aceitar</button>`;
+                else if(p.status === 'Em Preparo') btn = `<button onclick="alterar(${p.id},'Saiu para Entrega')" class="w-full bg-orange-500 text-white text-xs py-2 rounded-lg font-bold uppercase">Despachar 🛵</button>`;
+                else if(p.status === 'Saiu para Entrega') btn = `<button onclick="alterar(${p.id},'Entregue')" class="w-full bg-emerald-600 text-white text-xs py-2 rounded-lg font-bold uppercase">Entregue ✅</button>`;
+                
+                card.innerHTML = `<div class="flex justify-between font-black text-xs"><span>#${p.id} - ${p.cliente_nome}</span><span class="text-emerald-600">R$ ${p.total.toFixed(2)}</span></div><p class="text-[10px] text-slate-400 font-semibold">📱 ${p.cliente_whatsapp}</p><p class="text-[11px] text-slate-500 leading-tight">📍 ${p.endereco_entrega}</p>${btn}`;
+                if(p.status==='Pendente'||p.status==='Em Preparo') divP.appendChild(card);
+                if(p.status==='Saiu para Entrega') divR.appendChild(card);
+                if(p.status==='Entregue') { card.className="bg-emerald-50 text-xs text-slate-500 p-3 rounded-xl border flex justify-between items-center"; card.innerHTML=`<span>#${p.id} finalizado - ${p.cliente_nome}</span> <span class="font-bold text-emerald-700">R$ ${p.total.toFixed(2)}</span>`; divC.appendChild(card); }
+            });
+        }
+        async function alterar(id, st) { await fetch('/api/pedidos/' + id + '/status', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ novoStatus: st }) }); buscar(); }
+        setInterval(buscar, 4000); buscar();
+    </script>
+</body>
+</html>
