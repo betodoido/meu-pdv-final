@@ -16,7 +16,7 @@ let memoria = {
 };
 
 // ========================================================
-// 🛒 TELA DO CARDÁPIO DIGITAL PREMIUM (Layout Profissional)
+// 🛒 TELA DO CARDÁPIO DIGITAL PREMIUM (Layout Corrigido)
 // ========================================================
 app.get('/', (req, res) => {
     res.send(`
@@ -34,13 +34,13 @@ app.get('/', (req, res) => {
     </head>
     <body class="bg-slate-50 pb-36 text-slate-800">
 
-        <!-- Capa com Imagem e Degradê Elegante -->
+        <!-- Capa com Imagem Profissional -->
         <div class="relative h-48 bg-slate-900 overflow-hidden">
             <img src="https://unsplash.com" class="w-full h-full object-cover opacity-60 pointer-events-none" alt="Capa Burger">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
             
             <div class="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center">
-                <h1 class="text-3xl font-extrabold tracking-tight text-white uppercase">🍔 BURGER HOUSE</h1>
+                <h1 class="text-3xl font-extrabold tracking-tight text-white">🍔 BURGER HOUSE</h1>
                 <p class="text-xs text-slate-300 font-medium mt-1">Os melhores blends artesanais na sua casa</p>
                 <div class="mt-2.5 inline-flex items-center space-x-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -54,36 +54,28 @@ app.get('/', (req, res) => {
             <!-- Lista Dinâmica Organizada por Categoria -->
             <div class="space-y-6">
                 <div>
-                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
-                        <span>🍔 Burgers Artesanais</span>
-                    </h2>
+                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3">🍔 Burgers Artesanais</h2>
                     <div id="cat-Burgers" class="space-y-3"></div>
                 </div>
 
                 <div>
-                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
-                        <span>🍟 Acompanhamentos</span>
-                    </h2>
+                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3">🍟 Acompanhamentos</h2>
                     <div id="cat-Acompanhamentos" class="space-y-3"></div>
                 </div>
 
                 <div>
-                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3 flex items-center space-x-2">
-                        <span>🥤 Bebidas Geladas</span>
-                    </h2>
+                    <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400 mb-3">🥤 Bebidas Geladas</h2>
                     <div id="cat-Bebidas" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- Formulário de Entrega com Design de App -->
+            <!-- Formulário de Entrega -->
             <section class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
-                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide flex items-center space-x-2">
-                    <span>📍 Endereço de Entrega</span>
-                </h2>
+                <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">📍 Endereço de Entrega</h2>
                 <div class="space-y-3">
-                    <input type="text" id="f-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all">
-                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all">
-                    <textarea id="f-end" placeholder="Rua, Número, Bairro e Complemento" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all" rows="2"></textarea>
+                    <input type="text" id="f-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20">
+                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20">
+                    <textarea id="f-end" placeholder="Rua, Número, Bairro e Complemento" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20" rows="2"></textarea>
                 </div>
             </section>
         </main>
@@ -109,16 +101,16 @@ app.get('/', (req, res) => {
                     const container = document.getElementById('cat-' + p.categoria);
                     if(container) {
                         container.innerHTML += \`
-                            <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs transition-all hover:border-slate-200">
+                            <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs">
                                 <div class="flex-1 pr-3">
                                     <h3 class="font-bold text-slate-800 text-sm tracking-tight">\${p.nome}</h3>
                                     <p class="text-xs text-slate-400 mt-1 leading-relaxed font-medium">\${p.descricao}</p>
                                     <p class="text-slate-900 font-black mt-2 text-sm">R$ \${p.preco.toFixed(2)}</p>
                                 </div>
-                                <div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100 shadow-inner">
-                                    <button onclick="alt(\${p.id},-1)" class="w-8 h-8 rounded-lg bg-white text-slate-600 font-bold border border-slate-100 flex items-center justify-center shadow-sm active:bg-slate-100">-</button>
-                                    <span id="q-\&Acirc;\&ordm;\${p.id}" class="font-extrabold text-sm w-5 text-center text-slate-800">0</span>
-                                    <button onclick="alt(\text{\${p.id}},1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center shadow-md active:bg-red-700">+</button>
+                                <div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100">
+                                    <button onclick="alt(\${p.id},-1)" class="w-8 h-8 rounded-lg bg-white text-slate-600 font-bold border border-slate-100 flex items-center justify-center shadow-sm">-</button>
+                                    <span id="q-\${p.id}" class="font-extrabold text-sm w-5 text-center text-slate-800">0</span>
+                                    <button onclick="alt(\${p.id},1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center shadow-md">+</button>
                                 </div>
                             </div>\`;
                     }
@@ -126,7 +118,7 @@ app.get('/', (req, res) => {
             }
             function alt(id, d) {
                 car[id] = (car[id] || 0) + d; if(car[id] < 0) car[id] = 0; 
-                const display = document.getElementById('q-&Acirc;&ordm;' + id) || document.getElementById('q-' + id);
+                const display = document.getElementById('q-' + id);
                 if(display) display.innerText = car[id];
                 let sub = 0; prods.forEach(p => sub += (car[p.id] || 0) * p.preco);
                 document.getElementById('v-total').innerText = 'R$ ' + (sub > 0 ? sub + TAXA : TAXA).toFixed(2);
@@ -136,9 +128,9 @@ app.get('/', (req, res) => {
                 let sub = 0; const its = []; prods.forEach(p => { const q = car[p.id] || 0; if(q > 0) { sub += p.preco * q; its.push({ produto_id: p.id, nome_produto: p.nome, quantity: q, preco_unitario: p.preco }); } });
                 if(!n || !w || !e || its.length === 0) return alert("Por favor, preencha todos os dados e selecione seus lanches!");
                 await fetch('/api/pedidos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cliente_nome: n, cliente_whatsapp: w, endereco_entrega: e, taxa_entrega: TAXA, subtotal: sub, total: sub+TAXA, itens: its }) });
-                alert("Pedido Enviado com Sucesso! Acompanhe no seu painel."); location.reload();
+                alert("Pedido Enviado com Sucesso!"); location.reload();
             }
-            setTimeout(init, 200);
+            init();
         </script>
     </body>
     </html>
@@ -146,8 +138,21 @@ app.get('/', (req, res) => {
 });
 
 // ========================================================
-// 💻 TELA DO PAINEL GESTOR (Visual Clean Administrativo)
+// 💻 TELA DO PAINEL GESTOR EMBUTIDA
 // ========================================================
 app.get('/painel', (req, res) => {
     res.send(`
     <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Painel Operador - Monitor PDV</title>
+        <script src="https://tailwindcss.com"></script>
+        <link href="https://googleapis.com" rel="stylesheet">
+        <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    </head>
+    <body class="bg-slate-50 p-6 text-slate-800">
+        <div class="max-w-6xl mx-auto space-y-6">
+            
+            <header class="bg-white p-5 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs">
+                <div>
