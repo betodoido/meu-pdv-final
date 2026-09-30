@@ -2,34 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Painel Controle Delivery</title>
+    <title>Painel Controle Delivery & Produtos</title>
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
 <body class="bg-slate-50 p-6 text-slate-800">
     <div class="max-w-6xl mx-auto space-y-6">
-        <header class="bg-white p-5 rounded-2xl border flex justify-between items-center shadow-xs">
+        
+        <!-- Cabeçalho -->
+        <header class="bg-white p-5 rounded-2xl border flex justify-between items-center shadow-sm">
             <div>
-                <h1 class="text-xl font-black text-slate-900">💻 Monitor de Pedidos & Frente de Caixa</h1>
-                <p class="text-xs text-slate-400">Gerenciamento em Tempo Real</p>
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">💻 Monitor PDV & Gestão de Delivery</h1>
+                <p class="text-xs text-slate-400 mt-0.5">Gerencie os pedidos dos clientes e os produtos do cardápio</p>
             </div>
-            <button onclick="buscar()" class="bg-slate-900 text-white font-bold px-5 py-2.5 rounded-xl text-xs">🔄 Sincronizar</button>
+            <div class="flex space-x-2">
+                <button onclick="abrirModal()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all">🍔 Gerenciar Cardápio</button>
+                <button onclick="buscar()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-xl text-xs">🔄 Sincronizar</button>
+            </div>
         </header>
 
+        <!-- Kanban de Pedidos -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-blue-600 border-b pb-2">🍳 COZINHA / PREPARO</h2><div id="p-cozinha" class="space-y-2"></div></div>
-            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-orange-500 border-b pb-2">🛵 EM ROTA</h2><div id="p-rota" class="space-y-2"></div></div>
-            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-bold text-xs uppercase tracking-wider text-emerald-600 border-b pb-2">✅ CONCLUÍDOS</h2><div id="p-concluido" class="space-y-2"></div></div>
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-extrabold text-xs uppercase tracking-wider text-blue-600 border-b pb-2">🍳 COZINHA / PREPARO</h2><div id="p-cozinha" class="space-y-2"></div></div>
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-extrabold text-xs uppercase tracking-wider text-orange-500 border-b pb-2">🛵 EM ROTA</h2><div id="p-rota" class="space-y-2"></div></div>
+            <div class="bg-white p-5 rounded-2xl border shadow-sm space-y-3"><h2 class="font-extrabold text-xs uppercase tracking-wider text-emerald-600 border-b pb-2">✅ CONCLUÍDOS</h2><div id="p-concluido" class="space-y-2"></div></div>
         </div>
+
+        <!-- MODAL ADMINISTRATIVO DE CADASTRO DE PRODUTOS -->
+        <div id="modal-produtos" class="fixed inset-0 bg-slate-900/50 hidden flex items-center justify-center p-4 z-50">
+            <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl relative border">
+                <button onclick="fecharModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+                
+                <h2 class="text-base font-extrabold text-slate-800 uppercase tracking-wide border-b pb-2">✏️ Adicionar Novo Lanche</h2>
+                
+                <!-- Campos do Formulário -->
+                <div class="space-y-3">
+                    <input type="text" id="adm-nome" placeholder="Nome do Produto (Ex: Burger Triplo Cheddar)" class="w-full border rounded-xl p-3 text-sm bg-slate-50 font-medium">
+                    <input type="text" id="adm-desc" placeholder="Descrição/Ingredientes (Ex: 3 carnes, bacon, molho)" class="w-full border rounded-xl p-3 text-sm bg-slate-50 font-medium">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="adm-preco" step="0.01" placeholder="Preço (Ex: 29.90)" class="w-full border rounded-xl p-3 text-sm bg-slate-50 font-medium">
+                        <select id="adm-cat" class="w-full border rounded-xl p-3 text-sm bg-slate-50 font-bold text-slate-600">
+                            <option value="Burgers">Burgers</option>
+                            <option value="Acompanhamentos">Acompanhamentos</option>
+                            <option value="Bebidas">Bebidas</option>
+                        </select>
+                    </div>
+                    <button onclick="salvarLanche()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-3 rounded-xl text-sm transition-all shadow-md">Salvar e Publicar no Site 🚀</button>
+                </div>
+
+                <!-- Lista de Itens já ativos -->
+                <div class="border-t pt-3">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase mb-2">Produtos no Ar</h3>
+                    <div id="adm-lista-itens" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script>
+        function abrirModal() { document.getElementById('modal-produtos').classList.remove('hidden'); atualizarListaProdutos(); }
+        function fecharModal() { document.getElementById('modal-produtos').classList.add('hidden'); }
+
         async function buscar() {
             const r = await fetch('/api/pedidos'); const peds = await r.json();
             const divP = document.getElementById('p-cozinha'), divR = document.getElementById('p-rota'), divC = document.getElementById('p-concluido');
             divP.innerHTML = ""; divR.innerHTML = ""; divC.innerHTML = "";
             peds.forEach(p => {
-                const card = document.createElement('div'); card.className = "bg-slate-50 p-4 rounded-xl border space-y-2 shadow-xs";
+                const card = document.createElement('div'); card.className = "bg-white p-4 rounded-xl border space-y-2 shadow-xs";
                 let btn = "";
                 if(p.status === 'Pendente') btn = `<button onclick="alterar(${p.id},'Em Preparo')" class="w-full bg-blue-600 text-white text-xs py-2 rounded-lg font-bold uppercase">Aceitar</button>`;
                 else if(p.status === 'Em Preparo') btn = `<button onclick="alterar(${p.id},'Saiu para Entrega')" class="w-full bg-orange-500 text-white text-xs py-2 rounded-lg font-bold uppercase">Despachar 🛵</button>`;
@@ -41,6 +81,41 @@
                 if(p.status==='Entregue') { card.className="bg-emerald-50 text-xs text-slate-500 p-3 rounded-xl border flex justify-between items-center"; card.innerHTML=`<span>#${p.id} finalizado - ${p.cliente_nome}</span> <span class="font-bold text-emerald-700">R$ ${p.total.toFixed(2)}</span>`; divC.appendChild(card); }
             });
         }
+
+        async function atualizarListaProdutos() {
+            const res = await fetch('/api/produtos'); const produtos = await res.json();
+            const container = document.getElementById('adm-lista-itens');
+            container.innerHTML = "";
+            produtos.forEach(p => {
+                container.innerHTML += `
+                    <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border text-xs font-semibold">
+                        <div><p class="text-slate-800">${p.nome}</p><p class="text-emerald-600 font-bold">R$ ${p.preco.toFixed(2)}</p></div>
+                        <span class="text-[10px] bg-slate-200 text-slate-500 px-2 py-0.5 rounded-md font-bold uppercase">${p.categoria}</span>
+                    </div>`;
+            });
+        }
+
+        async function salvarLanche() {
+            const nome = document.getElementById('adm-nome').value.trim();
+            const descricao = document.getElementById('adm-desc').value.trim();
+            const preco = parseFloat(document.getElementById('adm-preco').value);
+            const categoria = document.getElementById('adm-cat').value;
+
+            if(!nome || isNaN(preco)) return alert("Preencha o nome e preço do lanche!");
+
+            await fetch('/api/produtos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, descricao, preco, categoria })
+            });
+
+            alert("🍟 Produto Salvo! Seu cardápio na internet já foi atualizado!");
+            document.getElementById('adm-nome').value = "";
+            document.getElementById('adm-desc').value = "";
+            document.getElementById('adm-preco').value = "";
+            atualizarListaProdutos();
+        }
+
         async function alterar(id, st) { await fetch('/api/pedidos/' + id + '/status', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ novoStatus: st }) }); buscar(); }
         setInterval(buscar, 4000); buscar();
     </script>
