@@ -6,6 +6,16 @@ const app = express();
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ROTA NOVA: Faz o link puro redirecionar direto para o cardápio automaticamente!
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cardapio.html'));
+});
+
+// ROTA NOVA: Facilita o acesso ao painel digitando apenas /painel
+app.get('/painel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'painel.html'));
+});
+
 const db = new sqlite3.Database(path.join(__dirname, 'database.db'), (err) => {
     if (err) console.error(err.message);
 });
@@ -41,7 +51,7 @@ app.patch('/api/pedidos/:id/status', (req, res) => {
     const { id } = req.params; const { novoStatus } = req.body;
     db.run("UPDATE pedidos SET status = ? WHERE id = ?", [novoStatus, id], () => {
         db.get("SELECT * FROM pedidos WHERE id = ?", [id], (err, p) => {
-            console.log(`\n📱 [WHATSAPP SIMULADO] Pedido #${id} atualizado para: ${novoStatus}\n`);
+            console.log(`\n📱 [WHATSAPP SIMULADO] Pedido #${id} updated to: ${novoStatus}\n`);
             res.json({ sucesso: true });
         });
     });
