@@ -3,83 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burger House - Cardápio</title>
+    <title>Burger House - Cardápio Digital</title>
+    <!-- Tailwind CSS para Design responsivo e Plus Jakarta Sans para fonte moderna -->
     <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
-    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
 </head>
 <body class="bg-slate-50 pb-36 text-slate-800">
 
-    <!-- Banner Superior Profissional -->
-    <div class="relative h-44 bg-slate-900 overflow-hidden">
-        <img src="https://unsplash.com" class="w-full h-full object-cover opacity-60" alt="Capa">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
-        <div class="absolute bottom-4 left-0 right-0 text-center">
-            <h1 class="text-3xl font-black text-white tracking-tight">🍔 BURGER HOUSE</h1>
-            <p class="text-xs text-slate-300 mt-0.5">Os melhores blends artesanais na sua casa</p>
+    <!-- Capa Principal com Imagem e Degradê Premium -->
+    <div class="relative h-52 bg-slate-900 overflow-hidden">
+        <img src="https://unsplash.com" class="w-full h-full object-cover opacity-60 pointer-events-none" alt="Capa Burger">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+        
+        <div class="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center">
+            <h1 class="text-3xl font-extrabold tracking-tight text-white">🍔 BURGER HOUSE</h1>
+            <p class="text-xs text-slate-300 font-medium mt-1">Os melhores blends artesanais na sua casa</p>
+            <div class="mt-2.5 inline-flex items-center space-x-1.5 bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Aberto para pedidos</span>
+            </div>
         </div>
     </div>
 
+    <!-- Corpo do Cardápio -->
     <main class="max-w-md mx-auto p-4 space-y-6">
-        <!-- Vitrine de Lanches -->
-        <div class="space-y-4">
-            <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 border-b pb-1">📋 Nosso Cardápio</h2>
-            <div id="lista-cardapio" class="space-y-3"></div>
+        
+        <!-- Categorias Dinâmicas -->
+        <div class="space-y-6">
+            <div>
+                <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 border-b pb-1">🍔 Burgers Artesanais</h2>
+                <div id="cat-Burgers" class="space-y-3"></div>
+            </div>
+
+            <div>
+                <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 border-b pb-1">🍟 Acompanhamentos</h2>
+                <div id="cat-Acompanhamentos" class="space-y-3"></div>
+            </div>
+
+            <div>
+                <h2 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-3 border-b pb-1">🥤 Bebidas Geladas</h2>
+                <div id="cat-Bebidas" class="space-y-3"></div>
+            </div>
         </div>
 
-        <!-- Dados do Cliente -->
-        <section class="bg-white p-5 rounded-2xl border space-y-3 shadow-sm">
-            <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">📍 Endereço de Entrega</h2>
-            <input type="text" id="c-nome" placeholder="Seu Nome Completo" class="w-full border rounded-xl p-3 text-sm bg-slate-50">
-            <input type="tel" id="c-whats" placeholder="WhatsApp com DDD" class="w-full border rounded-xl p-3 text-sm bg-slate-50">
-            <textarea id="c-end" placeholder="Rua, Número, Bairro e Referência" class="w-full border rounded-xl p-3 text-sm bg-slate-50" rows="2"></textarea>
+        <!-- Formulário de Entrega Estilo App -->
+        <section class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+            <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide flex items-center space-x-2">
+                <span>📍 Endereço de Entrega</span>
+            </h2>
+            <div class="space-y-3">
+                <input type="text" id="c-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
+                <input type="tel" id="c-whats" placeholder="WhatsApp com DDD (Apenas números)" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all">
+                <textarea id="c-end" placeholder="Rua, Número, Bairro e Complemento" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all" rows="2"></textarea>
+            </div>
         </section>
     </main>
 
-    <!-- Barra do Carrinho Fixa inferior -->
-    <footer class="fixed bottom-0 left-0 right-0 bg-white border-t p-4 shadow-2xl max-w-md mx-auto rounded-t-3xl flex justify-between items-center z-50">
+    <!-- Sacola Flutuante / Rodapé Fixo Estilo iFood -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 p-4 shadow-2xl max-w-md mx-auto rounded-t-3xl flex justify-between items-center z-50">
         <div>
-            <p class="text-[10px] text-slate-400 font-bold uppercase">Subtotal + Taxa inclusa</p>
-            <p class="text-2xl font-black text-slate-900" id="txt-total">R\$ 7,00</p>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total com R\$ 7,00 entrega</p>
+            <p class="text-2xl font-black text-slate-950 tracking-tight" id="txt-total">R\$ 7,00</p>
         </div>
-        <button onclick="fazerPedido()" class="bg-red-600 hover:bg-red-700 text-white font-extrabold py-3.5 px-8 rounded-xl shadow-md text-sm">Enviar Pedido 🚀</button>
+        <button onclick="fazerPedido()" class="bg-red-600 hover:bg-red-700 text-white font-extrabold py-3.5 px-8 rounded-xl shadow-lg shadow-red-600/20 transition-all active:scale-95 text-sm flex items-center space-x-2">
+            <span>Enviar Pedido</span>
+            <span>🚀</span>
+        </button>
     </footer>
 
     <script>
         let produtos = []; let carrinho = {}; const TAXA = 7.00;
-        async function carregar() {
+        
+        async function carregarCardapio() {
             const res = await fetch('/api/produtos'); produtos = await res.json();
-            const div = document.getElementById('lista-cardapio');
+            
             produtos.forEach(p => {
-                div.innerHTML += `
-                    <div class="bg-white p-4 rounded-2xl border flex justify-between items-center shadow-xs">
-                        <div class="flex-1 pr-2">
-                            <h3 class="font-bold text-slate-800 text-sm">${p.nome}</h3>
-                            <p class="text-xs text-slate-400 mt-0.5 leading-tight">${p.descricao}</p>
-                            <p class="text-slate-900 font-extrabold mt-2 text-sm">R$ ${p.preco.toFixed(2)}</p>
-                        </div>
-                        <div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border">
-                            <button onclick="mudarQtd(${p.id},-1)" class="w-8 h-8 rounded-lg bg-white border font-bold text-slate-600">-</button>
-                            <span id="qtd-${p.id}" class="font-bold text-sm w-4 text-center">0</span>
-                            <button onclick="mudarQtd(${p.id},1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold">+</button>
-                        </div>
-                    </div>`;
+                // Se o produto não tiver categoria definida no banco local, jogamos em Burgers por padrão
+                const categoriaAlvo = p.categoria || "Burgers";
+                const container = document.getElementById('cat-' + categoriaAlvo);
+                
+                if(container) {
+                    container.innerHTML += `
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-sm hover:border-slate-200 transition-all">
+                            <div class="flex-1 pr-3">
+                                <h3 class="font-bold text-slate-800 text-sm tracking-tight">${p.nome}</h3>
+                                <p class="text-xs text-slate-400 mt-1 leading-relaxed font-medium">${p.descricao || 'Delicioso item preparado na hora.'}</p>
+                                <p class="text-slate-900 font-black mt-2 text-sm">R$ ${p.preco.toFixed(2)}</p>
+                            </div>
+                            <div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100 shadow-inner">
+                                <button onclick="mudarQtd(${p.id},-1)" class="w-8 h-8 rounded-lg bg-white text-slate-600 font-bold border border-slate-100 flex items-center justify-center shadow-sm active:bg-slate-100">-</button>
+                                <span id="qtd-${p.id}" class="font-extrabold text-sm w-5 text-center text-slate-800">0</span>
+                                <button onclick="mudarQtd(${p.id},1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center shadow-md active:bg-red-700">+</button>
+                            </div>
+                        </div>`;
+                }
             });
         }
+
         function mudarQtd(id, delta) {
             carrinho[id] = (carrinho[id] || 0) + delta; if(carrinho[id] < 0) carrinho[id] = 0;
             document.getElementById('qtd-' + id).innerText = carrinho[id];
-            let sub = 0; produtos.forEach(p => sub += (carrinho[p.id] || 0) * p.preco);
+            
+            let sub = 0; 
+            produtos.forEach(p => sub += (carrinho[p.id] || 0) * p.preco);
             document.getElementById('txt-total').innerText = 'R\$ ' + (sub > 0 ? sub + TAXA : TAXA).toFixed(2);
         }
+
         async function fazerPedido() {
-            const n = document.getElementById('c-nome').value.trim(), w = document.getElementById('c-whats').value.trim(), e = document.getElementById('c-end').value.trim();
-            let sub = 0; const its = []; produtos.forEach(p => { const q = carrinho[p.id] || 0; if(q > 0) { sub += p.preco * q; its.push({ produto_id: p.id, nome_produto: p.nome, quantity: q, preco_unitario: p.preco }); } });
-            if(!n || !w || !e || its.length === 0) return alert("Escolha os itens e preencha todos os campos!");
-            await fetch('/api/pedidos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ cliente_nome: n, cliente_whatsapp: w, endereco_entrega: e, taxa_entrega: TAXA, subtotal: sub, total: sub+TAXA, itens: its }) });
-            alert("Pedido Enviado!"); location.reload();
+            const n = document.getElementById('c-nome').value.trim();
+            const w = document.getElementById('c-whats').value.trim();
+            const e = document.getElementById('c-end').value.trim();
+            
+            let sub = 0; const its = []; 
+            produtos.forEach(p => { 
+                const q = carrinho[p.id] || 0; 
+                if(q > 0) { 
+                    sub += p.preco * q; 
+                    its.push({ produto_id: p.id, nome_produto: p.nome, quantity: q, preco_unitario: p.preco }); 
+                } 
+            });
+
+            if(!n || !w || !e || its.length === 0) {
+                return alert("⚠️ Por favor, escolha pelo menos um item e preencha todos os campos de entrega!");
+            }
+
+            await fetch('/api/pedidos', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ cliente_nome: n, cliente_whatsapp: w, endereco_entrega: e, taxa_entrega: TAXA, subtotal: sub, total: sub+TAXA, itens: its }) 
+            });
+
+            alert("✅ Pedido enviado com sucesso ao restaurante!"); 
+            location.reload();
         }
-        carregar();
+        
+        carregarCardapio();
     </script>
 </body>
 </html>
