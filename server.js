@@ -16,7 +16,7 @@ let memoria = {
 };
 
 // ========================================================
-// 🛒 TELA DO CARDÁPIO DIGITAL PREMIUM (Layout Corrigido)
+// 🛒 TELA DO CARDÁPIO DIGITAL PREMIUM (Layout iFood)
 // ========================================================
 app.get('/', (req, res) => {
     res.send(`
@@ -34,13 +34,13 @@ app.get('/', (req, res) => {
     </head>
     <body class="bg-slate-50 pb-36 text-slate-800">
 
-        <!-- Capa com Imagem Profissional -->
+        <!-- Capa com Imagem e Degradê Elegante -->
         <div class="relative h-48 bg-slate-900 overflow-hidden">
             <img src="https://unsplash.com" class="w-full h-full object-cover opacity-60 pointer-events-none" alt="Capa Burger">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
             
             <div class="absolute bottom-4 left-4 right-4 flex flex-col items-center text-center">
-                <h1 class="text-3xl font-extrabold tracking-tight text-white">🍔 BURGER HOUSE</h1>
+                <h1 class="text-3xl font-extrabold tracking-tight text-white uppercase">🍔 BURGER HOUSE</h1>
                 <p class="text-xs text-slate-300 font-medium mt-1">Os melhores blends artesanais na sua casa</p>
                 <div class="mt-2.5 inline-flex items-center space-x-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -69,13 +69,13 @@ app.get('/', (req, res) => {
                 </div>
             </div>
 
-            <!-- Formulário de Entrega -->
+            <!-- Formulário de Entrega com Design de App -->
             <section class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
                 <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wide">📍 Endereço de Entrega</h2>
                 <div class="space-y-3">
-                    <input type="text" id="f-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20">
-                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20">
-                    <textarea id="f-end" placeholder="Rua, Número, Bairro e Complemento" class="w-full border border-slate-200 rounded-xl p-3 text-sm bg-slate-50 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500/20" rows="2"></textarea>
+                    <input type="text" id="f-nome" placeholder="Seu Nome Completo" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all">
+                    <input type="tel" id="f-whats" placeholder="WhatsApp com DDD (Ex: 11999998888)" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all">
+                    <textarea id="f-end" placeholder="Rua, Número, Bairro e Complemento" class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 bg-slate-50 font-medium transition-all" rows="2"></textarea>
                 </div>
             </section>
         </main>
@@ -100,19 +100,18 @@ app.get('/', (req, res) => {
                 prods.forEach(p => {
                     const container = document.getElementById('cat-' + p.categoria);
                     if(container) {
-                        container.innerHTML += \`
-                            <div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs">
-                                <div class="flex-1 pr-3">
-                                    <h3 class="font-bold text-slate-800 text-sm tracking-tight">\${p.nome}</h3>
-                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed font-medium">\${p.descricao}</p>
-                                    <p class="text-slate-900 font-black mt-2 text-sm">R$ \${p.preco.toFixed(2)}</p>
-                                </div>
-                                <div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100">
-                                    <button onclick="alt(\${p.id},-1)" class="w-8 h-8 rounded-lg bg-white text-slate-600 font-bold border border-slate-100 flex items-center justify-center shadow-sm">-</button>
-                                    <span id="q-\${p.id}" class="font-extrabold text-sm w-5 text-center text-slate-800">0</span>
-                                    <button onclick="alt(\${p.id},1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center shadow-md">+</button>
-                                </div>
-                            </div>\`;
+                        container.innerHTML += '<div class="bg-white p-4 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs">' +
+                            '<div class="flex-1 pr-3">' +
+                                '<h3 class="font-bold text-slate-800 text-sm tracking-tight">' + p.nome + '</h3>' +
+                                '<p class="text-xs text-slate-400 mt-1 leading-relaxed font-medium">' + p.descricao + '</p>' +
+                                '<p class="text-slate-900 font-black mt-2 text-sm">R$ ' + p.preco.toFixed(2) + '</p>' +
+                            '</div>' +
+                            '<div class="flex items-center space-x-2 bg-slate-50 p-1 rounded-xl border border-slate-100">' +
+                                '<button onclick="alt(' + p.id + ',-1)" class="w-8 h-8 rounded-lg bg-white text-slate-600 font-bold border border-slate-100 flex items-center justify-center shadow-sm">-</button>' +
+                                '<span id="q-' + p.id + '" class="font-extrabold text-sm w-5 text-center text-slate-800">0</span>' +
+                                '<button onclick="alt(' + p.id + ',1)" class="w-8 h-8 rounded-lg bg-red-600 text-white font-bold flex items-center justify-center shadow-md">+</button>' +
+                            '</div>' +
+                        '</div>';
                     }
                 });
             }
@@ -138,7 +137,7 @@ app.get('/', (req, res) => {
 });
 
 // ========================================================
-// 💻 TELA DO PAINEL GESTOR EMBUTIDA
+// 💻 TELA DO PAINEL GESTOR EMBUTIDA (Layout Clean)
 // ========================================================
 app.get('/painel', (req, res) => {
     res.send(`
@@ -154,5 +153,3 @@ app.get('/painel', (req, res) => {
     <body class="bg-slate-50 p-6 text-slate-800">
         <div class="max-w-6xl mx-auto space-y-6">
             
-            <header class="bg-white p-5 rounded-2xl border border-slate-100 flex justify-between items-center shadow-xs">
-                <div>
